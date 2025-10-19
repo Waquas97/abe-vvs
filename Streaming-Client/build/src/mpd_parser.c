@@ -95,9 +95,16 @@ MPDInfo* parse_mpd(const char* url) {
 
     // Extract duration + compute total_frames from frameRate
     xmlChar *dur = xmlGetProp(root, (const xmlChar*)"mediaPresentationDuration");
-    int seconds = 0;
+    int minutes = 0, seconds = 0, total_seconds = 0;
     if (dur) {
-        sscanf((char*)dur, "PT%*dM%dS", &seconds);
+        // Handles PT1M00S, PT0M30S, PT90S, etc.
+        if (strstr((char*)dur, "M")) {
+            sscanf((char*)dur, "PT%dM%dS", &minutes, &seconds);
+            total_seconds = minutes * 60 + seconds;
+        } else {
+            sscanf((char*)dur, "PT%dS", &seconds);
+            total_seconds = seconds;
+        }
         xmlFree(dur);
     }
 
@@ -121,8 +128,8 @@ MPDInfo* parse_mpd(const char* url) {
         }
     }
 
-    if (info->frame_rate > 0 && seconds > 0) {
-        info->total_frames = info->frame_rate * seconds;
+    if (info->frame_rate > 0 && total_seconds > 0) {
+        info->total_frames = info->frame_rate * total_seconds;
     }
 
     // Collect FrameURLs
