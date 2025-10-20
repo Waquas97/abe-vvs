@@ -1,5 +1,5 @@
-#include <glib.h>
-#include <stdio.h>
+#define _POSIX_C_SOURCE 200809L
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -142,6 +142,7 @@ int main(int argc, char* argv[]) {
         free_mpd(mpd);
         return 1;
     }
+    
 
     Logger* logger = logger_init(mpd->total_frames, /*stall_cap*/ 10000);
     if (!logger) {
@@ -198,9 +199,16 @@ int main(int argc, char* argv[]) {
                     fprintf(stderr, "[warn] decrypt failed (rc=%d) for frame %d\n", rc, frame->index);
                 }
             }
-            if (buffer_add(buffer) != 0) {
-                // Buffer full, drop frame
+            // Wait if buffer full
+            while (buffer->count >= buffer->max_frames) {
+                struct timespec ts = {0, 1000000}; // 1ms
+                nanosleep(&ts, NULL);
             }
+
+            if (buffer_add(buffer) != 0) {
+               printf("[warn] buffer full, frame %d dropped.\n", frame->index);
+                }
+            //printf("Buffer initialized: count=%d\n", buffer->count);
             logger_add_frame(logger, frame->index, frame->dl_ms, dec_ms, buffer->count);
             if (frame->buffer) {
                 g_byte_array_free(frame->buffer, 1);
@@ -235,9 +243,12 @@ int main(int argc, char* argv[]) {
                     fprintf(stderr, "[warn] download failed (rc=%d) for %s\n", rc, frame_url);
                 }
             }
+            while (buffer->count >= buffer->max_frames) {
+                struct timespec ts = {0, 1000000}; // 1ms
+                nanosleep(&ts, NULL);
+            }
             if (buffer_add(buffer) != 0) {
-                // Buffer full. In v1 (sequential) this is unlikely unless very small buffer.
-                // We drop the frame add here; player will eventually drain.
+                printf("[warn] buffer full, frame dropped.\n");
             }
             logger_add_frame(logger, i, dl_ms, dec_ms, buffer->count);
         }

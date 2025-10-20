@@ -87,16 +87,13 @@ Examples:
 ---
 
 ## 4. Limitations
-- **Buffer full**: new frames are dropped (no blocking/backpressure)
+- **Buffer full**: Solved through waiting 1ms for buffer to have space before adding new frame
 - **Polling stalls**: player checks every 1ms (no condvars yet)
-  
 - **Output in memory:** in-memory download/decrypt is now the default; disk writes only with `--write-output`
-- **Issue with downloaded frame names**: All names saved as frame_xx.ply.cpabe even if its from only http, or https or http-abe decryption, need to fix in future
 
 ---
 
 ## 5. Planned Improvements
-- **Backpressure-aware buffer**: downloader blocks when buffer full
 - **Condition variables** for player (no busy polling)
   
 - **In-memory download/decrypt** for speed (**implemented as default**)
