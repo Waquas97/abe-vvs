@@ -21,7 +21,7 @@ for i in $(seq 1 1440); do
     num=$(printf "%05d" "$i")
 
     # Define the name for the symbolic link.
-    link_name="108k-${num}.ply.cpabe"
+    link_name="108k-${num}.ply"
 
     # Create the symbolic link using 'ln -s'.
     # This command creates a link named $link_name that points to the $src file.
