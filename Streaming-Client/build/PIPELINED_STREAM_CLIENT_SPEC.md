@@ -86,8 +86,8 @@ Examples:
 
 ---
 
-## 4. Limitations
-- **Buffer full**: Solved through waiting 1ms for buffer to have space before adding new frame **SOLVED**
+## 4. Earlier Limitations
+- **Buffer full**: SOLVED through waiting 1ms for buffer to have space before adding new frame **SOLVED**
 - **Polling stalls**: player checks every 1ms (no condvars yet)
 - **Output in memory:** SOLVED, in-memory download/decrypt is now the default; disk writes only with `--write-output` **SOLVED**
 
