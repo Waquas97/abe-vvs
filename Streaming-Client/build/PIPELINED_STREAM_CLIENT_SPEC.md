@@ -71,7 +71,7 @@ Examples:
 - Configurable size: `--buffer <seconds>`
 - Measured in seconds worth of frames (`seconds * fps`)
 - Frames added after download (+ decrypt if enabled)
-- If buffer is full, new frames are dropped
+- If the buffer is full, wait 1ms, then recheck if the  buffer can get a new frame.
 
 ### Virtual Player
 - Consumes frames from buffer at exact `fps` using monotonic clock
@@ -87,9 +87,9 @@ Examples:
 ---
 
 ## 4. Limitations
-- **Buffer full**: Solved through waiting 1ms for buffer to have space before adding new frame
+- **Buffer full**: Solved through waiting 1ms for buffer to have space before adding new frame **SOLVED**
 - **Polling stalls**: player checks every 1ms (no condvars yet)
-- **Output in memory:** in-memory download/decrypt is now the default; disk writes only with `--write-output`
+- **Output in memory:** SOLVED, in-memory download/decrypt is now the default; disk writes only with `--write-output` **SOLVED**
 
 ---
 
