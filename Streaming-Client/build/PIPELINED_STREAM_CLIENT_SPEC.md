@@ -94,9 +94,8 @@ Examples:
 ---
 
 ## 5. Planned Improvements
+- **ABR** extend to work with ABR
 - **Condition variables** for player (no busy polling)
-  
-- **In-memory download/decrypt** for speed (**implemented as default**)
 - **Improved MPD fetching**
 
 ---
