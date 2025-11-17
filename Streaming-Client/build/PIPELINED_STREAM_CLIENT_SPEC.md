@@ -95,6 +95,7 @@ Examples:
 
 ## 5. Planned Improvements
 - **ABR** extend to work with ABR
+- **Encryption Level** player reads from MPD, modify MPD to include the level and player to read from it instead of passing an argument.
 - **Condition variables** for player (no busy polling)
 - **Improved MPD fetching**
 
