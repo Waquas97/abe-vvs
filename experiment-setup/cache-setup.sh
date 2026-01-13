@@ -20,14 +20,14 @@ sudo bin/traffic_server -R 1
 cd
 
 wget -L https://raw.githubusercontent.com/Waquas97/abe-vvs/master/experiment-setup/records.yaml
-wget -L https://raw.githubusercontent.com/Waquas97/abe-vvs/master/experiment-setup/loggings.yaml #pc_stream log
+wget -L https://raw.githubusercontent.com/Waquas97/abe-vvs/master/experiment-setup/logging.yaml #pc_stream log
 #tail -f /opt/ts/var/log/trafficserver/pc_stream.log
 
 sudo rm /opt/ts/etc/trafficserver/records.yaml
 sudo mv records.yaml /opt/ts/etc/trafficserver/ 
 
-sudo rm /opt/ts/etc/trafficserver/loggings.yaml
-sudo mv loggings.yaml /opt/ts/etc/trafficserver/ 
+sudo rm /opt/ts/etc/trafficserver/logging.yaml
+sudo mv logging.yaml /opt/ts/etc/trafficserver/ 
 
 #cache-server
 echo 'map https://10.10.1.1:443 https://10.10.1.2:443 @plugin=cachekey.so @pparam=--remove-prefix=true' | sudo tee -a /opt/ts/etc/trafficserver/remap.config 
