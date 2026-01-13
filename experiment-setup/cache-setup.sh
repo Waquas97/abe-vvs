@@ -71,35 +71,6 @@ sudo chmod 777 *
 
 
 
-# # TCP dump for capturing all pkts going in and out of node1 (server) fr
-# sudo tcpdump -i $(ifconfig | grep -o 'enp[^:]*') -s 0 -w traffic.pcap host node0-link-1
-# #clear tcpdump files
-# sudo rm *pcap
-# # get total volume from tcpdump file
-# capinfos traffic.pcap
-     
-
-
-
-
-
-
-
-
-
-# Need to do manually
-sudo apt-get --assume-yes install wireshark-common
-
-
-#For ssl cert and key have to do manually:
-cd /opt/ts/etc
-sudo mkdir ssl
-cd ssl
-sudo openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout server.key -out server.crt
-sudo chmod 777 *
-
-
-
 #NEED CHANGED:
 
 # TCP dump for capturing all pkts going in and out of node1 (server) fr
