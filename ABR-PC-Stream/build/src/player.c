@@ -37,7 +37,8 @@ void* simulate_player(void* arg) {
         logger_add_player_event(log, "waiting_for_initial_buffer",0, b->count);
     }
 
-    const double start_ms = now_ms_mono();
+    double start_ms = now_ms_mono();
+    const double frame_interval_ms = 1000.0 / (double)fps;
     logger_add_player_event(log, "playback_start",0, b->count);
 
     // Playback loop
@@ -60,12 +61,18 @@ void* simulate_player(void* arg) {
             logger_add_stall(log, stall_start, dur);
             in_stall = 0;
             logger_add_player_event(log, "stall_end", 0, b->count);
+
+            // Rebase the playback timeline so subsequent frames are paced
+            // at the regular frame interval after a stall (avoid accelerated catch-up).
+            // New start_ms is chosen so the next deadline becomes "now + frame_interval_ms".
+            double now = now_ms_mono();
+            start_ms = now - ((double)played_frames * frame_interval_ms);
         }
 
         // Consume a frame
         int consume_rc = buffer_consume(b);
         if (consume_rc == 0) {
-            double abs_deadline = frame_deadline_ms(start_ms, played_frames, fps);
+            double abs_deadline = frame_deadline_ms(start_ms, played_frames, frame_interval_ms);
             played_frames++;
 
             // Log player-specific event

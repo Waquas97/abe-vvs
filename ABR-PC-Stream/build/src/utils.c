@@ -26,7 +26,6 @@ void sleep_until_deadline_ms(double abs_deadline_ms) {
     clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &abst, NULL);
 }
 
-double frame_deadline_ms(double playback_start_ms, int frame_idx, int fps) {
-    const double frame_interval_ms = 1000.0 / (double)fps;
-    return playback_start_ms + (frame_idx + 1) * frame_interval_ms;
+double frame_deadline_ms(double start_ms, int frame_idx, const double frame_interval_ms) {
+    return start_ms + (frame_idx + 1) * frame_interval_ms;
 }

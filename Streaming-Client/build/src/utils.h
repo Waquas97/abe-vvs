@@ -10,6 +10,6 @@ double now_ms_mono(void);
 void sleep_until_deadline_ms(double abs_deadline_ms);
 
 // Compute absolute deadline for frame index at fps, given a playback start time (ms).
-double frame_deadline_ms(double playback_start_ms, int frame_idx, int fps);
+double frame_deadline_ms(double start_ms, int frame_idx, const double frame_interval_ms);
 
 #endif
