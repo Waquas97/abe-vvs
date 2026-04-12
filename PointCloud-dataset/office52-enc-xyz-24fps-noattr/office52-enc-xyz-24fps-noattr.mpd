@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MPD profiles="frame:based:pointcloud:streaming:NoDash:"
-	mediaPresentationDuration="PT0M10S">
+	mediaPresentationDuration="PT1M00S">
 	<AdaptationSet id="0" contentType="volumetricvideo" mimeType="model/ply">
 		<Representation id="rep12" frameRate="24" bandwidth="90857280">
 			<FrameList>
