@@ -43,6 +43,7 @@ static void usage(const char* prog) {
         "  [--abr-threshold <value>]  (set ABR quality threshold, default is 1.2)\n"
         "  [--abr-interval <seconds>] (set ABR check interval, default is 24, (NOTE:need to fix this to be equal to FPS))\n"
         "  [--inference]              (enable inference timing, default is off)\n"
+        "  [--inference-buffer-threshold <N>] (set buffer threshold for inference, default is 24)\n"
         "  [--inference-threshold <ms>] (set inference time threshold for inference decisions, default is 200ms)\n"
         "  [--inference-samples <N>] (number of recent samples to consider for inference decisions, default is 24)\n"
         "NOTE: Current client decryption and inference supports Binary PLY files and not ASCII PLY.\n",
@@ -294,8 +295,8 @@ int main(int argc, char* argv[]) {
                     if (!inf_buffer_mode_active && buffer->count >= inference_buffer_threshold) {
                         inf_buffer_mode_active = 1; // enable inference when buffer has enough frames
                     }
-                    if (inf_buffer_mode_active && buffer->count == 0) {
-                        inf_buffer_mode_active = 0; // disable inference if buffer empties
+                    if (inf_buffer_mode_active && buffer->count <= 12) {
+                        inf_buffer_mode_active = 0; // disable inference if buffer less than or equal to 12 frames (introduces hysteresis to prevent flapping around threshold)
                     }
                     if (inf_buffer_mode_active && !is_highest) should_run_inference = 1;
                 }
