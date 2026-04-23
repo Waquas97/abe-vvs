@@ -1,0 +1,29 @@
+sudo apt update
+sudo apt install -y curl gnupg lsb-release ca-certificates
+
+curl -fsSL https://packagecloud.io/varnishcache/varnish70/gpgkey \
+ | sudo gpg --dearmor -o /usr/share/keyrings/varnish.gpg
+
+ echo "deb [signed-by=/usr/share/keyrings/varnish.gpg] \
+https://packagecloud.io/varnishcache/varnish70/ubuntu/ \
+$(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/varnish.list
+
+sudo apt update
+sudo apt install -y varnish
+
+sudo nano /etc/varnish/default.vcl
+#I have the file
+
+
+sudo nano /lib/systemd/system/varnish.service
+
+#make this change:
+
+ExecStart=/usr/sbin/varnishd \
+          -j unix,user=vcache \
+          -F \
+          -a :80 \
+          -T localhost:6082 \
+          -f /etc/varnish/default.vcl \
+          -S /etc/varnish/secret \
+          -s malloc,2000m
